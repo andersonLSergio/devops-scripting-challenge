@@ -1,1 +1,7 @@
 .idea/
+
+# Python virtual environment:
+env/
+
+# VSCode workspace settings
+.vscode/
