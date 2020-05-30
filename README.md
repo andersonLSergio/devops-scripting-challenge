@@ -6,9 +6,15 @@ A simple CI tool for your CLI
 
 ### Linux
 
+TODO
+
 ### Mac
 
+TODO
+
 ### Windows
+
+TODO
 
 ## For Devs
 
