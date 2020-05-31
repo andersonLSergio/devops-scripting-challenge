@@ -2,16 +2,6 @@ Buildit4me
 
 A simple CI tool for your CLI
 
-## How to install
-
-### Linux and Mac OS-X
-
-TODO
-
-### Windows
-
-TODO
-
 ## Usage
 
 ```
@@ -22,8 +12,6 @@ buildit4me <PIPELINE_NAME> <GIT_REPO>
 |:-----------|:-------:|:--------------|
 |  <PIPELINE_NAME> |  String  | Reference to the pipeline defined in the YAML declarative file  |
 | <GIT_REPO>  |  String  | the git remote repo (HTTPS/SSH format) |
-
-## For Devs
 
 Requirements:
 

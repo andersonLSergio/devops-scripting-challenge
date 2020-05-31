@@ -13,7 +13,7 @@ RUN apt-get -yqq update && \
 
 # ADD env env
 ADD requirements.txt .
-ADD ./src/*.py ./
+ADD ./src/buildit4me/*.py ./
 
 # Activate existing Python Virtual Env
 # ENV VIRTUAL_ENV=/usr/src/app/env
