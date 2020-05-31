@@ -13,7 +13,7 @@ RUN apt-get -yqq update && \
 
 # ADD env env
 ADD requirements.txt .
-ADD *.py .
+ADD ./src/*.py ./
 
 # Activate existing Python Virtual Env
 # ENV VIRTUAL_ENV=/usr/src/app/env

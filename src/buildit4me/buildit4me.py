@@ -17,7 +17,7 @@ def define_cli_args():
   # Define and grab all args for CLI
   parser = argparse.ArgumentParser("buildit4me", description="A simple CI tool for your CLI")
   parser.add_argument("pipeline_name", 
-    help="a name for your current CI pipeline",
+    help="reference to the pipeline defined in the YAML declarative file",
     metavar="PIPELINE_NAME")
 
   parser.add_argument("git_repo", 

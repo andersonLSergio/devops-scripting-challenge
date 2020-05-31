@@ -1,0 +1,26 @@
+branch: feature/new-feature
+
+#List of Available tasks
+tasks:
+  - build:
+      cmd: mvn clean install
+  - compress:
+      cmd: zip -r scripting.zip target/
+  - integration:
+      cmd: mvn verify
+  - cmdless_task:
+      typo: echo TYPO
+
+
+#Pipeline execution order way to run my steps
+pipelines:
+  - build:
+     - build
+  - release:
+      - build
+      - integration
+      - compress
+  - foo:
+      - invalid
+  - bar:
+      - cmdless_task
