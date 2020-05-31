@@ -1,5 +1,23 @@
-FROM centos:7
+FROM python:3.6
 
-RUN yum -y install epel-release git-core
+ENV PYTHONBUFFERED 1
 
-RUN yum -y install maven unzip java-1.8.0-openjdk
+WORKDIR /usr/src/app
+
+RUN echo "deb http://security.debian.org/debian-security stretch/updates main" >> /etc/apt/sources.list
+RUN apt-get -yqq update && \
+    apt-get -yqq --no-install-recommends install openjdk-8-jdk-headless \
+      maven \
+      zip && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+# ADD env env
+ADD requirements.txt .
+ADD *.py .
+
+# Activate existing Python Virtual Env
+# ENV VIRTUAL_ENV=/usr/src/app/env
+# ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+RUN pip install --no-cache-dir -r requirements.txt \
+    && find . -type f -name "*.pyc" -delete || true
