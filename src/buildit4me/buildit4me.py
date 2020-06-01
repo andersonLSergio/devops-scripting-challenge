@@ -23,6 +23,10 @@ def define_cli_args():
   parser.add_argument("git_repo", 
     help="the git remote repo (HTTPS/SSH format)",
     metavar="GIT_REPO")
+
+  parser.add_argument("-d", "--debug", 
+    help="enables debug mode which prints out useful information for developers",
+    action="store_true")
   global args
   args = parser.parse_args()
 
@@ -34,25 +38,6 @@ def parse_and_return_pipeline_yaml(location, name=YAML_FILE):
   yaml_file = open(location + "/" + name)
   parsed_yaml_file = yaml.load(yaml_file, Loader=yaml.FullLoader)
   return parsed_yaml_file
-
-# https://gitpython.readthedocs.io/en/stable/reference.html#module-git.remote
-def clone_and_return_repo(git_repo, tmpdirname):
-  """
-  git_repo (string): Git remote address (HTTP|SSH format)\n
-  tmpdirname (string) - Location in the filesystem where to place the cloned repo
-  return - instance object of the git repo
-  """
-  print('-> Creating temporary directory', tmpdirname)
-  print(f"-> Cloning { git_repo } into temp dir '{ tmpdirname }'")
-  repo = Repo.clone_from(git_repo, tmpdirname, branch='master', progress=CloneProgress())  
-  return repo
-
-def checkout_local_branch(repo, branch):
-  """
-  git_repo (string): The current instance of git repo\n
-  branch (string): The branch to be checked out locally
-  """
-  repo.git.checkout(branch)
 
 def return_task_cmd(task, tasks):
   """
@@ -86,28 +71,41 @@ def is_valid_task(pipeline_task, tasks):
   pipeline_task (string): task to lookup for inside the valid tasks iterable
   tasks (list): list to iterate through in order to lookup for pipeline_task
   """
-  return pipeline_task in [task_key for task_dict in tasks for task_key in task_dict.keys()]
+  # use list comprehension to extract a list containing all task names from the tasks data structure
+  return pipeline_task in [valid_task for task_dict in tasks for valid_task in task_dict.keys()]
 
 def start_build():
   f = Figlet(font='standard')
   print(f.renderText("BuildIt4me!"))
   define_cli_args()
+  if args.debug:
+    print("*** DEBUG MODE ***")
   print(f"-> Pipeline '{ args.pipeline_name }' has started!")
   
   try:
     # The temp directory for the cloned repo is only kept inside the below "with" scope
     with tempfile.TemporaryDirectory() as tmpdirname:
+      print('-> Creating temporary directory', tmpdirname)
       print("-> Checking out from SCM")
+      print(f"-> Cloning { args.git_repo } into temp dir '{ tmpdirname }'")
       # get the instance of the git object while cloning the remote repo
-      git_repo = clone_and_return_repo(args.git_repo, tmpdirname)
+      # https://gitpython.readthedocs.io/en/stable/reference.html#module-git.remote
+      git_repo = Repo.clone_from(args.git_repo, tmpdirname, branch='master', progress=CloneProgress())
       # retrieve the branch where the build should run from
       build_branch = parse_and_return_pipeline_yaml(tmpdirname)["branch"]
       # return the defined tasks from the parsed yaml file
       tasks = parse_and_return_pipeline_yaml(tmpdirname)["tasks"]
       # return the defined pipelines from the parsed yaml file
       pipelines = parse_and_return_pipeline_yaml(tmpdirname)["pipelines"]
+
+      # if DEBUG global variable is set to True, print parsed complex data strucure for tasks and pipelines
+      if args.debug:
+        print("[DEBUG] - Tasks Data Structure:", tasks)
+        print("[DEBUG] - Pipelines Data Structure:", pipelines)
+
       print("\nBuild from branch:", build_branch)
-      checkout_local_branch(git_repo, build_branch)
+      # checks out local git branch
+      git_repo.git.checkout(build_branch)
       # checks if the provided pipeline is valid
       if is_valid_pipeline(args.pipeline_name, pipelines):
         # iterate through all dictionaries represented by {'pipeline_name': ['task1', 'task2']}
@@ -128,7 +126,7 @@ def start_build():
                       shell=True, cwd=tmpdirname)
                     # if the subprocess exit code is other than 0 raise an error
                     if cmd_call:
-                      raise OSError("Subprocess returned with error", cmd_call)
+                      raise ValueError("Provided CMD doesn't work. Subprocess returned with error", cmd_call)
                 else:
                   raise ValueError(f"The task '{ pipeline_task }' doesn't seem to be a valid task. Check your pipeline manifest and try again.")
       else:
