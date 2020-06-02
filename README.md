@@ -17,7 +17,7 @@ python3 buildit4me <PIPELINE_NAME> <GIT_REPO>
 | *-d, --debug*  |  Flag  | Enables debug mode which prints out useful information for developers | No | No |
 | *-h, --help*  |  Flag  | Prints out CLI help section | No | No |
 
-Requirements:
+### Requirements:
 
 Make sure you have following Python dependencies:
 - Python v3
@@ -45,11 +45,9 @@ pip -V
 pip install -r requirements.txt
 ```
 
-### Using the script from source
+### Test it against a sample pipeline target
 
-In order to see the script in action without compiling a binary, you can make use of the present `Dockerfile`. 
-
-For such purpose there's a Shell script to make your life easier, which you bring you directly inside the container (interactive mode) that includes all build dependencies for the [sample target Java application](https://github.com/PayCertify/devops-scripting-helloworld), such as JDK, Maven and zip.
+For such purpose there's a Shell script to make your life easier, it will make use of the [Dockerfile](./Dockerfile) present in this repo and take you directly inside a container (interactive mode) which includes all build dependencies for the [sample target Java application](https://github.com/PayCertify/devops-scripting-helloworld), such as JDK, Maven and zip.
 
 Execute the `docker_activate.sh` script:
 ```bash
@@ -60,4 +58,5 @@ Once you are interacting with the container `sh`, issue the following:
 ```bash
 python3 ./src/buildit4me/buildit4me.py build https://github.com/PayCertify/devops-scripting-helloworld.git
 ```
-> *Note: Replace `build` with `release` or `foo` in order to refer to different pipelines inside the [**pipeline.yaml**](https://github.com/PayCertify/devops-scripting-helloworld/blob/master/pipeline.yml) declarative file.*
+> *Note: You can replace `build` with `release` or `foo` in order to refer to different pipelines inside the [**pipeline.yaml**](https://github.com/PayCertify/devops-scripting-helloworld/blob/master/pipeline.yml) declarative file.*
+---
