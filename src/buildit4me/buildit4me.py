@@ -36,8 +36,8 @@ def parse_and_return_pipeline_yaml(location, name=YAML_FILE):
   name (string) - the *.yaml file name
   return - Dict
   """
-  yaml_file = open(location + "/" + name)
-  parsed_yaml_file = yaml.load(yaml_file, Loader=yaml.FullLoader)
+  with open(location + "/" + name) as yaml_file:
+    parsed_yaml_file = yaml.load(yaml_file, Loader=yaml.FullLoader)
   return parsed_yaml_file
 
 def return_task_cmd(task, tasks):
