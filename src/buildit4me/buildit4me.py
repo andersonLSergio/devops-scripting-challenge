@@ -34,6 +34,7 @@ def parse_and_return_pipeline_yaml(location, name=YAML_FILE):
   """
   location (string): the *.yaml file location\n
   name (string) - the *.yaml file name
+  return - Dict
   """
   yaml_file = open(location + "/" + name)
   parsed_yaml_file = yaml.load(yaml_file, Loader=yaml.FullLoader)
@@ -43,7 +44,9 @@ def return_task_cmd(task, tasks):
   """
   task (string): pipeline to lookup for inside the valid pipelines iterable
   pipelines (list): list to iterate through in order to lookup for pipeline
-  return: Boolean
+  return formats:
+    - String containing the command itself
+    - Boolean False stating that the command wasn't found
   """
   # extracts both task name and its corresponding command based on provided task
   # expecting a command key named as 'cmd'
@@ -70,6 +73,7 @@ def is_valid_task(pipeline_task, tasks):
   """
   pipeline_task (string): task to lookup for inside the valid tasks iterable
   tasks (list): list to iterate through in order to lookup for pipeline_task
+  return: Boolean
   """
   # use list comprehension to extract a list containing all task names from the tasks data structure
   return pipeline_task in [valid_task for task_dict in tasks for valid_task in task_dict.keys()]
@@ -140,6 +144,6 @@ def start_build():
     print("Couldn't create temporary directory in local file system:", err)
     print("Error code:", err.errno)
 
-# Start the building process
 if __name__ == "__main__":
+  # Start the building process
   start_build()
