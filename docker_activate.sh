@@ -1,6 +1,6 @@
 #!/bin/bash
 # ensure that the local venv includes all dependencies
-pip freeze > requirements.txt
+# pip freeze > requirements.txt
 
 # build aux docker image
 docker build -t buildit4me:test .

@@ -45,6 +45,20 @@ pip -V
 pip install -r requirements.txt
 ```
 
+<br />
+
+**Note:** If you notice an error regarding `pkg-resources==0.0.0`, remove it from your PIP packages:
+```bash
+pip uninstall pkg-resources==0.0.0
+```
+> You may would need to find and remove the line regarding this package from your `requirements.txt` too.
+
+Then try installing the dependencies again:
+```bash
+pip install -r requirements.txt
+```
+
+
 ### Test it against a sample pipeline target
 
 For such purpose there's a Shell script to make your life easier, it will make use of the [Dockerfile](./Dockerfile) present in this repo and take you directly inside a container (interactive mode) which includes all build dependencies for the [sample target Java application](https://github.com/PayCertify/devops-scripting-helloworld), such as JDK, Maven and zip.
