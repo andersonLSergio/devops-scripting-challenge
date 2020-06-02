@@ -1,0 +1,6 @@
+altgraph==0.17
+gitdb==4.0.5
+GitPython==3.1.2
+pyfiglet==0.8.post1
+PyYAML==5.3.1
+smmap==3.0.4

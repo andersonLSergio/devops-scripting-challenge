@@ -1,88 +1,85 @@
-PayCertify Scripting Challenge
-======
-We wrote a simple dummy Java app, but we decided that we don't want to use Jenkins nor CircleCI for our Continuous Integration, instead, we've decided to ask you to write a simple Continuous Integration system for us :)
+# Buildit4me
 
-Your challenge is to write a script that will execute a simple pipeline (already designed) inside our Git repository:
+A simple CI tool for your CLI
 
-https://github.com/PayCertify/devops-scripting-helloworld
+![Demo image](./assets/buildit4me.png)
 
-Inside the repository, we've added a `pipeline.yml` file. Your CI tool will lookup this file to execute the requested pipeline that will be implemented in your tool.
+## Usage
 
-In a glance, your script needs to:
-
-* Fetch git code (https://github.com/PayCertify/devops-scripting-helloworld)
-* Parse the `pipeline.yml`
-* Run selected pipeline
-
-
-Pipeline.yml Format
-======
-The pipeline file has only three main hashes.
-
-Branch: Repository branch that should be used to execute the code.
-
-Tasks: Commands that can be used to create a pipeline
-
-Pipelines: Group of ordered tasks
-
-Script Arguments
-======
-* Pipeline name, E.g: build
-* Git repository URL
-
-Examples
-=====
-Assuming your script name is `pipeline` - You're free to give a name to your CI tool :)
-
-Should fetch git code and execute `build` pipeline:
-```shell
-./pipeline build https://github.com/PayCertify/devops-scripting-helloworld.git
+```bash
+python3 buildit4me <PIPELINE_NAME> <GIT_REPO>
 ```
 
-Testing
-=====
-You can test your script on your personal computer if you have `git`, `maven`, `unzip` and `java` installed. 
+| Argument  |  Type |  Description | Positional | Required |
+|:-----------|:-------:|:--------------|:--------:|:--------:|
+| *<PIPELINE_NAME>* |  String  | Reference to the pipeline defined in the YAML declarative file  | Yes | Yes |
+| *<GIT_REPO>*  |  String  | The git remote repo (HTTPS/SSH format) | Yes | Yes |
+| *-d, --debug*  |  Flag  | Enables debug mode which prints out useful information for developers | No | No |
+| *-h, --help*  |  Flag  | Prints out CLI help section | No | No |
 
-If you don't have it installed, we got your back, there is `Dockerfile` in this repo that you can use to run your script.
+### Requirements:
 
-Tasks to be completed
-======
-* Create a Terraform module that will provision a VM or Container Orchestration Service (EKS? Fargate?)
-where the build generated will be deployed.
-* Create your CI tool from scratch, using your own code.
+Make sure you have following Python dependencies:
+- Python v3
+- python3-pip
 
-Requirements
-======
-* Your script should execute the pipeline without errors.
-* Provide meaningful log to the user during pipeline execution.
-* Fail fast if something bad happens
+---
 
-### Language Choice
-Your code should be written using one of the below languages:
-* Go
-* Groovy
-* Python
-* Ruby
-* PHP
+### Dev environment setup
 
+After cloning this repo to your local working directory, prepare your dev environment like so:
 
-Evaluation Topics
-======
-* Code design
-* Best practices
-* Unit / Integration Tests
-* Comments / Documentation
+1 - Create a virtual environment in order to isolate your Python workspace under your working directory:
+```bash
+python3 -m venv env && source env/bin/activate 
+```
 
-Delivery Instructions
-======
-* You must fork this repository into your own account.
-* Once finished, you must open a PR in PayCertify's repo and send the PR url to the recruiter.
-* After your evaluation, if you passed, the recruiter will schedule the next step in the interview process.
+2 - Check if you are actually inside the Python Virtual Environment:
+```bash
+pip -V
+```
+> This should show you the path for your previous created Python `venv` directory
 
-## Format
+3 - Install Python dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-* You must be prepared to walk an evaluator through all the created artifacts including tests
-* Mention anything that was asked but not delivered and why, and any additional comments.
+### Test it against a sample pipeline target
 
-Thank you,
-The PayCertify Recruiting Team
+For such purpose there's a Shell script to make your life easier, it will make use of the [Dockerfile](./Dockerfile) present in this repo and take you directly inside a container (interactive mode) which includes all build dependencies for the [sample target Java application](https://github.com/PayCertify/devops-scripting-helloworld), such as JDK, Maven and zip.
+
+Execute the `docker_activate.sh` script:
+```bash
+./docker_activate.sh
+```
+
+Once you are interacting with the container `sh`, issue the following:
+```bash
+python3 ./src/buildit4me/buildit4me.py build https://github.com/PayCertify/devops-scripting-helloworld.git
+```
+> *Note: You can replace `build` with `release` or `foo` in order to refer to different pipelines inside the [**pipeline.yaml**](https://github.com/PayCertify/devops-scripting-helloworld/blob/master/pipeline.yml) declarative file.*
+
+<br />
+
+## Unit Testing
+
+In order to execute the script containing all unit tests proceed as follow:
+
+Change to the src directory context:
+```bash
+cd ./src
+```
+
+<br />
+
+Execute the `unit_tests.py` script:
+```bash
+python3 unit_tests.py
+```
+
+### Test Assets
+
+In order for the tests to be more precise, there's a `./src/test_assets` directory designed to keep aux and mockup files, such as `pipeline.yml`.
+
+---

@@ -1,1 +1,15 @@
 .idea/
+
+# Python virtual environment:
+env/
+
+# VSCode workspace settings
+.vscode/
+
+# Python cache
+*.pyc
+
+# PyInstaller
+build/
+dist/
+*.spec
