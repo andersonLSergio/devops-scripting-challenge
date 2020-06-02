@@ -59,4 +59,27 @@ Once you are interacting with the container `sh`, issue the following:
 python3 ./src/buildit4me/buildit4me.py build https://github.com/PayCertify/devops-scripting-helloworld.git
 ```
 > *Note: You can replace `build` with `release` or `foo` in order to refer to different pipelines inside the [**pipeline.yaml**](https://github.com/PayCertify/devops-scripting-helloworld/blob/master/pipeline.yml) declarative file.*
+
+<br />
+
+## Unit Testing
+
+In order to execute the script containing all unit tests proceed as follow:
+
+Change to the src directory context:
+```bash
+cd ./src
+```
+
+<br />
+
+Execute the `unit_tests.py` script:
+```bash
+python3 unit_tests.py
+```
+
+### Test Assets
+
+In order for the tests to be more precise, there's a `./src/test_assets` directory designed to keep aux and mockup files, such as `pipeline.yml`.
+
 ---
