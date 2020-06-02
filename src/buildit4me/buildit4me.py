@@ -141,4 +141,5 @@ def start_build():
     print("Error code:", err.errno)
 
 # Start the building process
-start_build()
+if __name__ == "__main__":
+  start_build()
