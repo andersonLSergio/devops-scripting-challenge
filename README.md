@@ -70,7 +70,7 @@ Execute the `docker_activate.sh` script:
 
 Once you are interacting with the container `sh`, issue the following:
 ```bash
-python3 ./src/buildit4me/buildit4me.py build https://github.com/PayCertify/devops-scripting-helloworld.git
+python3 ./buildit4me.py build https://github.com/PayCertify/devops-scripting-helloworld.git
 ```
 > *Note: You can replace `build` with `release` or `foo` in order to refer to different pipelines inside the [**pipeline.yaml**](https://github.com/PayCertify/devops-scripting-helloworld/blob/master/pipeline.yml) declarative file.*
 
